@@ -306,8 +306,7 @@ impl<N: Network> LedgerState<N> {
         // Update the ledger tree state.
         ledger.regenerate_ledger_tree()?;
         // As the ledger is in read-only mode, proceed to start a process to keep the reader in sync.
-        *ledger.read_only.2.write() = Some(Arc::new(ledger.initialize_reader_heartbeat(latest_block)?));
-
+        let resource = ledger.initialize_reader_heartbeat(latest_block)?;
         trace!("[Read-Only] Ledger successfully loaded at block {}", ledger.latest_block_height());
         Ok((ledger, resource))
     }
@@ -1509,7 +1508,7 @@ impl<N: Network> BlockState<N> {
         // Retrieve the block transactions.
         let transactions = self.get_block_transactions(block_height)?;
 
-        Ok(Block::from_unchecked(previous_block_hash, block_header, transactions)?)
+        Ok(Block::from(previous_block_hash, block_header, transactions)?)
     }
 
     /// Returns the blocks from the given `start_block_height` to `end_block_height` (inclusive).
