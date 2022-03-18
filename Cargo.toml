@@ -19,49 +19,6 @@ edition = "2021"
 [workspace]
 members = [ ".crawler", ".integration", ".synthetic_node", "environment", "metrics", "network", "rpc", "storage" ]
 
-[features]
-default = [ "rpc" ]
-cuda = [ "snarkvm/cuda" ]
-prometheus = [ "snarkos-metrics" ]
-rpc = [ "jsonrpsee" ]
-test = [ ]
-
-[dependencies]
-bytes = "1.0.0"
-crossterm = "0.23"
-tui = "0.17.0"
-
-[dependencies.snarkos-metrics]
-path = "./metrics"
-version = "2.0.2"
-optional = true
-
-[dependencies.snarkos-storage]
-path = "./storage"
-version = "2.0.2"
-
-[dependencies.snarkvm]
-git = "https://github.com/harukama/snarkvm"
-branch = "unchecked"
-
-[dependencies.aleo-std]
-version = "0.1.6"
-
-[dependencies.anyhow]
-version = "1"
-
-[dependencies.async-trait]
-version = "0.1"
-
-[dependencies.bincode]
-version = "1.0"
-
-[dependencies.cfg-if]
-version = "1.0"
-
-[dependencies.circular-queue]
-version = "0.2"
-
 [lib]
 path = "snarkos/lib.rs"
 
@@ -161,10 +118,8 @@ version = "0.11"
 
 [profile.release]
 opt-level = 3
-debug = 1
 lto = "thin"
 incremental = true
-codegen-units = 256
 
 [profile.bench]
 opt-level = 3

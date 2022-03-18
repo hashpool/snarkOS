@@ -28,10 +28,6 @@ harness = false
 name = "opening"
 harness = false
 
-[dependencies.snarkvm]
-git = "https://github.com/harukama/snarkvm"
-branch = "unchecked"
-
 [dependencies.anyhow]
 version = "1"
 
