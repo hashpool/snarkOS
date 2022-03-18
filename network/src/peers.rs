@@ -18,8 +18,6 @@ use crate::{Data, DisconnectReason, LedgerReader, LedgerRouter, Message, Operato
 use snarkos_environment::Environment;
 use snarkvm::dpc::prelude::*;
 
-use crate::helpers::NodeType;
-
 #[cfg(any(feature = "test", feature = "prometheus"))]
 use snarkos_metrics as metrics;
 

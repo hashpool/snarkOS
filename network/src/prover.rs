@@ -17,7 +17,7 @@
 use crate::{Data, LedgerReader, LedgerRequest, LedgerRouter, Message, PeersRequest, PeersRouter};
 use snarkos_environment::{
     helpers::{NodeType, State},
-    Data, Environment, LedgerReader, LedgerRouter, Message, PeersRequest, PeersRouter,
+    Environment
 };
 use snarkos_storage::{storage::Storage, ProverState};
 use snarkvm::dpc::{posw::PoSWProof, prelude::*};

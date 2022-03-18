@@ -182,7 +182,7 @@ impl<N: Network, E: Environment> Operator<N, E> {
                                 match result {
                                     Ok(Ok(block_template)) => {
                                         // Acquire the write lock to update the block template.
-                                        *operator.block_template.write().await = Some(block_template);
+                                        *operator.block_template.write().await = Some(block_template.clone());
                                         // Clear the set of known nonces.
                                         operator.known_nonces.write().await.clear();
 

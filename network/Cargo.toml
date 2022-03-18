@@ -22,6 +22,12 @@ version = "1"
 [dependencies.bincode]
 version = "1.0"
 
+[dependencies.rayon]
+version = "1"
+
+[dependencies.num_cpus]
+version = "1"
+
 [dependencies.bytes]
 version = "1.0.0"
 
