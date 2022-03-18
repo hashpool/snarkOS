@@ -18,7 +18,6 @@
 //!
 //! See [RpcFunctions](../trait.RpcFunctions.html) for documentation of public endpoints.
 
-use crate::{rpc::*, Environment, PeersRequest, ProverRequest};
 use crate::{RpcContext, RpcError, RpcFunctions};
 use snarkos_environment::Environment;
 use snarkos_network::ProverRequest;

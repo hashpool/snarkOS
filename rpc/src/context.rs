@@ -16,8 +16,6 @@
 
 //! Logic for instantiating the RPC server.
 
-use crate::{network::Operator, rpc::*, Environment, LedgerReader, LedgerRouter, OperatorRouter, Peers, ProverRouter};
-use crate::RpcFunctions;
 use snarkos_environment::Environment;
 use snarkos_network::{LedgerReader, Operator, Peers, ProverRouter};
 use snarkvm::dpc::{Address, MemoryPool, Network};
