@@ -35,6 +35,7 @@ use tokio::{
     task,
     time::timeout,
 };
+use snarkos_environment::helpers::NodeType;
 
 /// Shorthand for the parent half of the `Peers` message channel.
 pub type PeersRouter<N, E> = mpsc::Sender<PeersRequest<N, E>>;
