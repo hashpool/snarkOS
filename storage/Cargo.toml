@@ -14,7 +14,7 @@ keywords = [
 ]
 categories = [ "cryptography", "operating-systems" ]
 license = "GPL-3.0"
-edition = "2018"
+edition = "2021"
 
 [[bench]]
 name = "lookups"
@@ -58,7 +58,7 @@ version = "1"
 version = "0.18"
 optional = true
 default-features = false
-features = [ "snappy" ]
+features = [ "lz4" ]
 
 [dependencies.serde]
 version = "1"
@@ -66,8 +66,19 @@ version = "1"
 [dependencies.serde_json]
 version = "1"
 
+[dependencies.snarkos-environment]
+path = "../environment"
+version = "2.0.2"
+
+[dependencies.snarkvm]
+version = "0.8.0"
+
 [dependencies.time]
 version = "0.3.7"
+
+[dependencies.tokio]
+version = "1"
+features = [ "sync" ]
 
 [dependencies.tracing]
 version = "0.1"
@@ -81,6 +92,11 @@ version = "0.3"
 [dev-dependencies.tempfile]
 version = "3.2"
 
+[dev-dependencies.snarkos-storage]
+path = "."
+features = [ "test" ]
+
 [features]
 default = [ "rocks" ]
 rocks = [ "bincode", "rocksdb" ]
+test = [ ]

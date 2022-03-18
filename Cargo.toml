@@ -14,10 +14,10 @@ keywords = [
 ]
 categories = [ "cryptography", "operating-systems" ]
 license = "GPL-3.0"
-edition = "2018"
+edition = "2021"
 
 [workspace]
-members = [ "metrics", "storage", "testing" ]
+members = [ ".crawler", ".integration", ".synthetic_node", "environment", "metrics", "network", "rpc", "storage" ]
 
 [features]
 default = [ "rpc" ]
@@ -31,130 +31,133 @@ bytes = "1.0.0"
 crossterm = "0.23"
 tui = "0.17.0"
 
-  [dependencies.snarkos-metrics]
-  path = "./metrics"
-  version = "2.0.2"
-  optional = true
+[dependencies.snarkos-metrics]
+path = "./metrics"
+version = "2.0.2"
+optional = true
 
-  [dependencies.snarkos-storage]
-  path = "./storage"
-  version = "2.0.2"
+[dependencies.snarkos-storage]
+path = "./storage"
+version = "2.0.2"
 
-  [dependencies.snarkvm]
-  git = "https://github.com/harukama/snarkvm"
-  branch = "unchecked"
+[dependencies.snarkvm]
+git = "https://github.com/harukama/snarkvm"
+branch = "unchecked"
 
-  [dependencies.aleo-std]
-  version = "0.1.6"
+[dependencies.aleo-std]
+version = "0.1.6"
 
-  [dependencies.anyhow]
-  version = "1"
+[dependencies.anyhow]
+version = "1"
 
-  [dependencies.async-trait]
-  version = "0.1"
+[dependencies.async-trait]
+version = "0.1"
 
-  [dependencies.bincode]
-  version = "1.0"
+[dependencies.bincode]
+version = "1.0"
 
-  [dependencies.cfg-if]
-  version = "1.0"
+[dependencies.cfg-if]
+version = "1.0"
 
-  [dependencies.circular-queue]
-  version = "0.2"
+[dependencies.circular-queue]
+version = "0.2"
 
-  [dependencies.colored]
-  version = "2.0"
+[lib]
+path = "snarkos/lib.rs"
 
-  [dependencies.futures]
-  version = "0.3.21"
-  features = [ "thread-pool" ]
+[[bin]]
+name = "snarkos"
+path = "snarkos/main.rs"
+required-features = ["console"]
 
-  [dependencies.hex]
-  version = "0.4"
+[features]
+default = [ "console", "rpc" ]
+console = [ "crossterm", "tui" ]
+cuda = [ "snarkvm/cuda" ]
+prometheus = [ "snarkos-metrics/prometheus", "snarkos-network/prometheus" ]
+rpc = [ "snarkos-rpc" ]
+task-metrics = [ "snarkos-environment/task-metrics" ]
+test = [ "snarkos-metrics/test", "snarkos-network/test" ]
 
-  [dependencies.jsonrpsee]
-  version = "0.9"
-  optional = true
-  features = [ "http-server" ]
+[dependencies.aleo-std]
+version = "0.1.12"
 
-  [dependencies.num_cpus]
-  version = "1"
+[dependencies.anyhow]
+version = "1"
 
-  [dependencies.once_cell]
-  version = "1"
+[dependencies.colored]
+version = "2.0"
 
-  [dependencies.parking_lot]
-  version = "0.12"
+[dependencies.crossterm]
+version = "0.23"
+optional = true
 
-  [dependencies.rand]
-  version = "0.8"
+[dependencies.num_cpus]
+version = "1"
 
-  [dependencies.rayon]
-  version = "1"
+[dependencies.rand]
+version = "0.8"
 
-  [dependencies.self_update]
-  version = "0.28"
-  features = [
+[dependencies.rayon]
+version = "1"
+
+[dependencies.self_update]
+version = "0.28"
+features = [
   "archive-zip",
   "compression-zip-bzip2",
   "compression-zip-deflate",
   "compression-flate2"
 ]
 
-  [dependencies.serde]
-  version = "1"
+[dependencies.snarkos-environment]
+path = "./environment"
+version = "2.0.2"
 
-  [dependencies.serde_json]
-  version = "1"
-  features = [ "arbitrary_precision" ]
+[dependencies.snarkos-metrics]
+path = "./metrics"
+version = "2.0.2"
+optional = true
 
-  [dependencies.structopt]
-  version = "0.3"
+[dependencies.snarkos-network]
+path = "./network"
+version = "2.0.2"
 
-  [dependencies.thiserror]
-  version = "1.0"
+[dependencies.snarkos-rpc]
+path = "./rpc"
+version = "2.0.2"
+optional = true
 
-  [dependencies.time]
-  version = "0.3.7"
+[dependencies.snarkos-storage]
+path = "./storage"
+version = "2.0.2"
 
-  [dependencies.tokio]
-  version = "1"
-  features = [
-  "io-util",
-  "macros",
-  "net",
-  "rt-multi-thread",
-  "signal",
-  "sync",
-  "time"
-]
+[dependencies.snarkvm]
+version = "0.8.0"
 
-  [dependencies.tokio-util]
-  version = "0.7"
-  features = [ "codec" ]
+[dependencies.clap]
+version = "3.1"
+features = [ "derive" ]
 
-  [dependencies.tokio-stream]
-  version = "=0.1"
+[dependencies.thiserror]
+version = "1.0"
 
-  [dependencies.tracing]
-  version = "0.1"
+[dependencies.tokio]
+version = "1"
 
-  [dependencies.tracing-subscriber]
-  version = "0.3"
-  features = [ "env-filter", "parking_lot" ]
+[dependencies.tracing]
+version = "0.1"
 
-[dev-dependencies.jsonrpsee]
-version = "0.9"
-features = [ "http-client" ]
-
-[dev-dependencies.rand_chacha]
+[dependencies.tracing-subscriber]
 version = "0.3"
+features = [ "env-filter", "parking_lot" ]
+
+[dependencies.tui]
+version = "0.17"
+optional = true
 
 [dev-dependencies.rusty-hook]
 version = "0.11"
-
-[dev-dependencies.tempfile]
-version = "3.2"
 
 [profile.release]
 opt-level = 3

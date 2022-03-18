@@ -14,13 +14,23 @@ keywords = [
 ]
 categories = [ "cryptography", "operating-systems" ]
 license = "GPL-3.0"
-edition = "2018"
+edition = "2021"
+
+
+[features]
+prometheus = [ "metrics-exporter-prometheus" ]
+test = []
 
 [dependencies.metrics]
 version = "0.18"
 
+[dependencies.metrics-util]
+version = "0.12"
+
 [dependencies.metrics-exporter-prometheus]
-version = "0.8"
+version = "0.9"
+optional = true
 
 [dependencies.tokio]
 version = "1"
+features = [ "rt" ]

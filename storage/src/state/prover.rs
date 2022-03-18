@@ -28,23 +28,17 @@ pub struct ProverState<N: Network> {
 
 impl<N: Network> ProverState<N> {
     ///
-    /// Opens a new writable instance of `ProverState` from the given storage path.
+    /// Opens a new instance of `ProverState` from the given storage path.
     ///
-    pub fn open_writer<S: Storage, P: AsRef<Path>>(path: P) -> Result<Self> {
+    pub fn open<S: Storage, P: AsRef<Path>>(path: P, is_read_only: bool) -> Result<Self> {
         // Open storage.
         let context = N::NETWORK_ID;
-        let is_read_only = false;
         let storage = S::open(path, context, is_read_only)?;
 
         // Initialize the prover.
         let prover = Self {
             coinbase: CoinbaseState::open(storage)?,
         };
-
-        // let value = storage.export()?;
-        // println!("{}", value);
-        // let storage_2 = S::open(".ledger_2", context)?;
-        // storage_2.import(value)?;
 
         info!("Prover successfully initialized");
         Ok(prover)
@@ -116,7 +110,7 @@ impl<N: Network> CoinbaseState<N> {
             Err(anyhow!("Record with commitment {} already exists in storage", commitment))
         } else {
             // Insert the record.
-            self.records.insert(&commitment, &(block_height, record))?;
+            self.records.insert(&commitment, &(block_height, record), None)?;
             Ok(())
         }
     }
@@ -124,7 +118,7 @@ impl<N: Network> CoinbaseState<N> {
     /// Removes the given record from storage.
     fn remove_record(&self, commitment: &N::Commitment) -> Result<()> {
         // Remove the record entry.
-        self.records.remove(commitment)?;
+        self.records.remove(commitment, None)?;
         Ok(())
     }
 }
