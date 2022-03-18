@@ -17,7 +17,7 @@
 //! Logic for instantiating the RPC server.
 
 use snarkos_environment::Environment;
-use snarkos_network::{LedgerReader, Operator, Peers, ProverRouter};
+use snarkos_network::{LedgerReader, Operator, Peers, ProverRouter, LedgerRouter, OperatorRouter};
 use snarkvm::dpc::{Address, MemoryPool, Network};
 
 use futures::TryFutureExt;
@@ -28,6 +28,7 @@ use jsonrpsee::{
 use serde::{Deserialize, Serialize};
 use std::{net::SocketAddr, ops::Deref, sync::Arc, time::Instant};
 use tokio::sync::{oneshot, RwLock};
+use crate::RpcFunctions;
 
 // The details on resource-limiting can be found at https://github.com/paritytech/jsonrpsee/blob/master/core/src/server/resource_limiting.rs
 // note: jsonrpsee expects string literals as resource names; we'll be distinguishing

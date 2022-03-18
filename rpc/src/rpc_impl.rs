@@ -20,7 +20,7 @@
 
 use crate::{RpcContext, RpcError, RpcFunctions};
 use snarkos_environment::Environment;
-use snarkos_network::ProverRequest;
+use snarkos_network::{ProverRequest, PeersRequest};
 use snarkos_storage::Metadata;
 use snarkvm::{
     dpc::{Address, AleoAmount, Block, BlockHeader, Blocks, Network, Record, Transaction, Transactions, Transition},
