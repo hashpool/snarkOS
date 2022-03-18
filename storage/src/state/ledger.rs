@@ -87,15 +87,11 @@ pub struct LedgerState<N: Network> {
     /// The blocks of the ledger in storage.
     blocks: BlockState<N>,
     /// The indicator bit and tracker for a ledger in read-only mode.
-<<<<<<< HEAD
-    read_only: (bool, RwLock<Block<N>>, RwLock<Option<Arc<JoinHandle<()>>>>),
     /// Used to ensure the database operations aren't interrupted by a shutdown.
     map_lock: Arc<RwLock<()>>,
     /// Coinbase cache.
     coinbase_cache: RwLock<(Option<Transaction<N>>, Option<Record<N>>)>,
-=======
     read_only: (bool, RwLock<Block<N>>),
->>>>>>> c6ce950876127e7cb0196bfbda0c477c82399b4b
 }
 
 impl<N: Network> LedgerState<N> {
@@ -128,13 +124,9 @@ impl<N: Network> LedgerState<N> {
             latest_block_locators: Default::default(),
             ledger_roots: storage.open_map(MapId::LedgerRoots)?,
             blocks: BlockState::open(storage)?,
-<<<<<<< HEAD
-            read_only: (is_read_only, RwLock::new(N::genesis_block().clone()), RwLock::new(None)),
             map_lock: Default::default(),
             coinbase_cache: RwLock::new((None, None)),
-=======
             read_only: (is_read_only, RwLock::new(N::genesis_block().clone())),
->>>>>>> c6ce950876127e7cb0196bfbda0c477c82399b4b
         };
 
         // Determine the latest block height.
@@ -272,13 +264,9 @@ impl<N: Network> LedgerState<N> {
             latest_block_locators: Default::default(),
             ledger_roots: storage.open_map(MapId::LedgerRoots)?,
             blocks: BlockState::open(storage)?,
-<<<<<<< HEAD
-            read_only: (is_read_only, RwLock::new(N::genesis_block().clone()), RwLock::new(None)),
             map_lock: Default::default(),
             coinbase_cache: RwLock::new((None, None)),
-=======
             read_only: (is_read_only, RwLock::new(N::genesis_block().clone())),
->>>>>>> c6ce950876127e7cb0196bfbda0c477c82399b4b
         });
 
         // Determine the latest block height.
@@ -318,11 +306,7 @@ impl<N: Network> LedgerState<N> {
         // Update the ledger tree state.
         ledger.regenerate_ledger_tree()?;
         // As the ledger is in read-only mode, proceed to start a process to keep the reader in sync.
-<<<<<<< HEAD
         *ledger.read_only.2.write() = Some(Arc::new(ledger.initialize_reader_heartbeat(latest_block)?));
-=======
-        let resource = ledger.initialize_reader_heartbeat(latest_block)?;
->>>>>>> c6ce950876127e7cb0196bfbda0c477c82399b4b
 
         trace!("[Read-Only] Ledger successfully loaded at block {}", ledger.latest_block_height());
         Ok((ledger, resource))
@@ -370,7 +354,7 @@ impl<N: Network> LedgerState<N> {
 
     /// Returns the transactions from the latest block.
     pub fn latest_block_transactions(&self) -> Transactions<N> {
-        self.latest_block.read().transactions().clone()
+        self.latest_block.read().transactions().clone().into()
     }
 
     /// Returns the latest block locators.
@@ -743,7 +727,7 @@ impl<N: Network> LedgerState<N> {
 
         // Mine the next block.
         match Block::mine(&template, terminator, rng) {
-            Ok(block) => Ok((block, coinbase_record)),
+            Ok(block) => Ok((block, coinbase_record.into())),
             Err(error) => Err(anyhow!("Unable to mine the next block: {}", error)),
         }
     }
@@ -1096,26 +1080,17 @@ impl<N: Network> LedgerState<N> {
     }
 
     /// Initializes a heartbeat to keep the ledger reader in sync, with the given starting block height.
-<<<<<<< HEAD
-    fn initialize_reader_heartbeat(self: &Arc<Self>, starting_block: Block<N>) -> Result<JoinHandle<()>> {
-=======
     fn initialize_reader_heartbeat(self: &Arc<Self>, starting_block: Block<N>) -> Result<Resource> {
->>>>>>> c6ce950876127e7cb0196bfbda0c477c82399b4b
         // If the storage is *not* in read-only mode, this method cannot be called.
         if !self.is_read_only() {
             return Err(anyhow!("Ledger must be read-only to initialize a reader heartbeat"));
         }
         *self.read_only.1.write() = starting_block;
 
-<<<<<<< HEAD
-        let ledger = self.clone();
-        Ok(thread::spawn(move || {
-=======
         let (abort_sender, mut abort_receiver) = oneshot::channel();
 
         let ledger = self.clone();
         let thread_handle = thread::spawn(move || {
->>>>>>> c6ce950876127e7cb0196bfbda0c477c82399b4b
             loop {
                 // Check if the thread shouldn't be aborted.
                 match abort_receiver.try_recv() {
@@ -1746,7 +1721,7 @@ impl<N: Network> TransactionState<N> {
 
                 // Insert the transition.
                 self.transitions
-                    .insert(&transition_id, &(transaction_id, i as u8, transition.clone()), batch)?;
+                    .insert(&transition_id, &(transaction_id, i as u8, transition.clone().into()), batch)?;
 
                 // Insert the serial numbers.
                 for serial_number in transition.serial_numbers() {
