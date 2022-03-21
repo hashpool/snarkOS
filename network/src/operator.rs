@@ -185,7 +185,7 @@ impl<N: Network, E: Environment> Operator<N, E> {
                                         *operator.block_template.write().await = Some(block_template.clone());
                                         // Clear the set of known nonces.
                                         operator.known_nonces.write().await.clear();
-
+                                        todo!("(猜测)这里可能有一些问题：当同步的模版不是最新的区块时，如果传播出去，会导致矿机浪费算力");
                                         let pool_message = Message::NewBlockTemplate(Data::Object(block_template));
                                         if let Err(error) = peers_router.send(PeersRequest::MessagePropagatePoolServer(pool_message)).await {
                                             warn!("Failed to propagate PoolRequest: {}", error);
